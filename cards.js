@@ -1,7 +1,8 @@
-const template = document.createElement('template');
-template.innerHTML = /*html*/`
-  <style>
-    .user-card {
+import 'https://cdn.skypack.dev/construct-style-sheets-polyfill';
+
+
+const styles = /*css*/`
+.user-card {
   font-family: 'Arial', sans-serif;
   background: #f4f4f4;
   width: 500px;
@@ -32,7 +33,13 @@ template.innerHTML = /*html*/`
   flex: 1;
   margin-left: 10%;
 }
-  </style>
+`
+
+const sheet = new CSSStyleSheet();
+sheet.replaceSync(styles);
+console.log(sheet);
+const template = document.createElement('template');
+template.innerHTML = /*html*/`
   <div class="user-card">
     <img />
     <div class="info-wrapper">
@@ -54,6 +61,7 @@ class UserCard extends HTMLElement {
 
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot.adoptedStyleSheets = [sheet]
   }
 
   toggleInfo() {
